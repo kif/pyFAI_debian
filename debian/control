@@ -1,0 +1,31 @@
+Source: pyfai
+Maintainer: Jerome Kieffer <jerome.kieffer@esrf.fr>
+Section: science
+Priority: extra
+Build-Depends: python-setuptools, python-all-dev (>= 2.5), debhelper (>= 8), python-numpy
+Standards-Version: 3.9.2
+Homepage: http://forge.epn-campus.eu/projects/azimuthal
+XS-Python-Version: >= 2.6
+
+Package: pyfai
+Architecture: any
+Depends: ${misc:Depends}, ${python:Depends}, ${shlibs:Depends}, python-imaging, python-numpy, python-matplotlib, python-scipy, python-fabio
+Recommends: python-numpy-ext, python-fftw
+Suggests: pymca, python-rfoo 
+Description: python library for Fast Azimuthal Integration
+ PyFAI is a Python library for azimuthal integration; it allows the conversion
+ of diffraction images taken with 2D detectors like CCD cameras into X-Ray
+ powder patterns that can be used by other software like Rietveld refinement
+ tools (i.e. FullProf), phase analysis or texture analysis.
+ .
+ As PyFAI is a library, its main goal is to be integrated in other tools like
+ PyMca, LiMa or EDNA. To perform online data analysis, the precise description
+ of the experimental setup has to be known. This is the reason why PyFAI 
+ includes geometry optimization code working on "powder rings" of reference 
+ samples. Alternatively, PyFAI can also import geometries fitted with other 
+ tools like Fit2D.
+ .
+ PyFAI has been designed to work with any kind of detector with any geometry
+ (transmission, reflection, off-axis, ...). It uses the Python library FabIO 
+ to read most images taken by diffractometer.
+
