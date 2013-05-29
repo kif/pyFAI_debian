@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-# coding: utf8
+# coding: utf-8
 #
 #    Project: pyFAI tests class utilities
-#             http://forge.epn-campus.eu/projects/azimuthal
+#             https://github.com/kif/pyFAI
 #
-#    File: "$Id:$"
 #
 #    Copyright (C) 2010 European Synchrotron Radiation Facility
 #                       Grenoble, France
@@ -32,40 +31,29 @@ __authors__ = ["Jérôme Kieffer"]
 __contact__ = "jerome.kieffer@esrf.eu"
 __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
-__data__ = "2011-07-06"
+__data__ = "2013-02-23"
 
-import unittest
-import os
-import logging
 import sys
+import unittest
 
-force_build = False
-
-for opts in sys.argv[:]:
-    if opts in ["-d", "--debug"]:
-        logging.basicConfig(level=logging.DEBUG)
-        sys.argv.pop(sys.argv.index(opts))
-    elif opts in ["-i", "--info"]:
-        logging.basicConfig(level=logging.INFO)
-        sys.argv.pop(sys.argv.index(opts))
-    elif opts in ["-f", "--force"]:
-        force_build = True
-        sys.argv.pop(sys.argv.index(opts))
-
-try:
-    logging.debug("tests loaded from file: %s" % __file__)
-except:
-    __file__ = os.getcwd()
-
-from utilstest import UtilsTest
-
-if force_build:
-    UtilsTest.forceBuild()
+from utilstest import UtilsTest, getLogger
+logger = getLogger(__file__)
 
 from testGeometryRefinement   import test_suite_all_GeometryRefinement
 from testAzimuthalIntegrator  import test_suite_all_AzimuthalIntegration
 from testHistogram            import test_suite_all_Histogram
 from testPeakPicking          import test_suite_all_PeakPicking
+from testGeometry             import test_suite_all_Geometry
+from testMask                 import test_suite_all_Mask
+from testOpenCL               import test_suite_all_OpenCL
+from testExport               import test_suite_all_Export
+from testSaxs                 import test_suite_all_Saxs
+from testIntegrate            import test_suite_all_Integrate1d
+from testBilinear             import test_suite_all_bilinear
+from testDistortion           import test_suite_all_distortion
+from testFlat                 import test_suite_all_Flat
+from testUtils                import test_suite_all_Utils
+from testPolarization         import test_suite_all_Polarization
 
 def test_suite_all():
     testSuite = unittest.TestSuite()
@@ -73,11 +61,22 @@ def test_suite_all():
     testSuite.addTest(test_suite_all_GeometryRefinement())
     testSuite.addTest(test_suite_all_AzimuthalIntegration())
     testSuite.addTest(test_suite_all_PeakPicking())
+    testSuite.addTest(test_suite_all_Geometry())
+    testSuite.addTest(test_suite_all_Mask())
+    testSuite.addTest(test_suite_all_OpenCL())
+    testSuite.addTest(test_suite_all_Export())
+    testSuite.addTest(test_suite_all_Saxs())
+    testSuite.addTest(test_suite_all_Integrate1d())
+    testSuite.addTest(test_suite_all_bilinear())
+    testSuite.addTest(test_suite_all_distortion())
+    testSuite.addTest(test_suite_all_Flat())
+    testSuite.addTest(test_suite_all_Utils())
     return testSuite
 
 if __name__ == '__main__':
 
     mysuite = test_suite_all()
     runner = unittest.TextTestRunner()
-    runner.run(mysuite)
+    if not runner.run(mysuite).wasSuccessful():
+        sys.exit(1)
 
