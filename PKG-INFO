@@ -1,0 +1,11 @@
+Metadata-Version: 1.1
+Name: pyFAI
+Version: 0.9.0-rc1
+Summary: Python implementation of fast azimuthal integration
+Home-page: http://forge.epn-campus.eu/azimuthal
+Author: Jérôme Kieffer (python),       Peter Boesecke (geometry), Manuel Sanchez del Rio (algorithm), Vicente Armando Sole (algorithm),       Dimitris Karkoulis (GPU), Jon Wright (adaptations) and Frederic-Emmanuel Picca
+Author-email: jerome.kieffer@esrf.fr
+License: UNKNOWN
+Download-URL: http://forge.epn-campus.eu/projects/azimuthal/files
+Description: UNKNOWN
+Platform: UNKNOWN

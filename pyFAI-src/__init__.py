@@ -1,4 +1,4 @@
-version = "0.3.5"
+version = "0.9.0-rc1"
 import sys, logging
 logging.basicConfig()
 
@@ -7,3 +7,4 @@ if sys.version_info < (2, 6):
     logger.error("pyFAI required a python version >= 2.6")
     raise RuntimeError("pyFAI required a python version >= 2.6, now we are running: %s" % sys.version)
 from azimuthalIntegrator import AzimuthalIntegrator
+load = AzimuthalIntegrator.sload

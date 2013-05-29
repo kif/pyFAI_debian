@@ -2,8 +2,11 @@
 
 # Script that builds a debian package from this library 
  
-rm -rf deb_dist
+rm -rf dist
+python setup.py sdist
+cd dist
+tar -xzf pyFAI-*.tar.gz
+cd pyFAI*
 python setup.py --command-packages=stdeb.command bdist_deb
-#sudo dpkg -i deb_dist/python-pyfai*.deb
-sudo su -c  "dpkg -i deb_dist/python-pyfai*"
-
+sudo su -c  "dpkg -i deb_dist/pyfai*.deb"
+cd ../..

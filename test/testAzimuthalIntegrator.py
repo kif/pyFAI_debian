@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 #
-#    Project: Azimuthal integration 
+#    Project: Azimuthal integration
 #             https://forge.epn-campus.eu/projects/azimuthal
 #
 #    File: "$Id$"
@@ -38,28 +38,9 @@ import numpy
 import logging, time
 import sys
 import fabio
-force_build = False
-for opts in sys.argv[1:]:
-    if opts in ["-d", "--debug"]:
-        logging.basicConfig(level=logging.DEBUG)
-        sys.argv.pop(sys.argv.index(opts))
-    elif opts in ["-i", "--info"]:
-        logging.basicConfig(level=logging.INFO)
-        sys.argv.pop(sys.argv.index(opts))
-    elif opts in ["-f", "--force"]:
-        force_build = True
-        sys.argv.pop(sys.argv.index(opts))
-logger = logging.getLogger("testAzimuthalIntegrator")
 
-try:
-    logger.debug("tests loaded from file: %s" % __file__)
-except:
-    __file__ = os.getcwd()
-    logger.debug("tests loaded from file: %s" % __file__)
-
-from utilstest import UtilsTest, Rwp
-if force_build:
-    UtilsTest.forceBuild()
+from utilstest import UtilsTest, Rwp, getLogger
+logger = getLogger(__file__)
 pyFAI = sys.modules["pyFAI"]
 from pyFAI.azimuthalIntegrator import AzimuthalIntegrator
 if logger.getEffectiveLevel() <= logging.INFO:
@@ -80,8 +61,15 @@ class test_azim_halfFrelon(unittest.TestCase):
         self.halfFrelon = UtilsTest.getimage(self.__class__.halfFrelon)
         self.splineFile = UtilsTest.getimage(self.__class__.splineFile)
         self.poniFile = UtilsTest.getimage(self.__class__.poniFile)
-        data = open(self.poniFile).read()
-        open(self.poniFile, "w").write(data.replace(" halfccd.spline", " " + self.splineFile))
+        with open(self.poniFile) as f:
+            data = []
+            for line in f:
+                if line.startswith("SplineFile:"):
+                    data.append("SplineFile: " + self.splineFile)
+                else:
+                    data.append(line.strip())
+        with open(self.poniFile, "w") as f:
+            f.write(os.linesep.join(data))
         self.fit2d = numpy.loadtxt(self.fit2dFile)
         self.ai = AzimuthalIntegrator()
         self.ai.load(self.poniFile)
@@ -272,7 +260,7 @@ def test_suite_all_AzimuthalIntegration():
     testSuite.addTest(test_azim_halfFrelon("test_cython_vs_numpy"))
     testSuite.addTest(test_flatimage("test_splitPixel"))
     testSuite.addTest(test_flatimage("test_splitBBox"))
-#This test is known to be broken ...
+# This test is known to be broken ...
 #    testSuite.addTest(test_saxs("test_mask"))
 
     return testSuite
